@@ -13,13 +13,15 @@ import {
 
 import type { CalendarEvent } from "../types";
 import { formatDecimalTime } from "../utils/date";
+import { AppColors, EventColors } from "@/constants/app-colors";
+import { AppText } from "@/constants/app-text";
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   onCreate: (event: CalendarEvent) => void;
 };
-const COLORS = ["#6758D9", "#EE7065", "#DB8A35", "#348A78", "#3782D2"];
+const COLORS = EventColors;
 
 export function CreateEventSheet({ visible, onClose, onCreate }: Props) {
   const [title, setTitle] = useState("");
@@ -43,7 +45,7 @@ export function CreateEventSheet({ visible, onClose, onCreate }: Props) {
       start,
       end: start + 1,
       color,
-      calendar: "Personal",
+      calendar: AppText.personal,
     });
   };
 
@@ -62,39 +64,39 @@ export function CreateEventSheet({ visible, onClose, onCreate }: Props) {
         <View style={styles.sheet}>
           <View style={styles.handle} />
           <View style={styles.header}>
-            <Text style={styles.heading}>New event</Text>
+            <Text style={styles.heading}>{AppText.newEvent}</Text>
             <Pressable onPress={onClose} style={styles.close}>
-              <Ionicons name="close" size={20} color="#555A64" />
+              <Ionicons name="close" size={20} color={AppColors.icon} />
             </Pressable>
           </View>
-          <Text style={styles.label}>TITLE</Text>
+          <Text style={styles.label}>{AppText.titleLabel}</Text>
           <TextInput
             autoFocus
             value={title}
             onChangeText={setTitle}
-            placeholder="What are you planning?"
-            placeholderTextColor="#A1A3AA"
+            placeholder={AppText.titlePlaceholder}
+            placeholderTextColor={AppColors.textDisabled}
             style={styles.input}
             returnKeyType="done"
             onSubmitEditing={submit}
           />
-          <Text style={styles.label}>START TIME</Text>
+          <Text style={styles.label}>{AppText.startTimeLabel}</Text>
           <View style={styles.timeControl}>
             <Pressable
               onPress={() => setStart((value) => Math.max(7, value - 0.25))}
               style={styles.stepButton}
             >
-              <Ionicons name="remove" size={20} color="#6758D9" />
+              <Ionicons name="remove" size={20} color={AppColors.primary} />
             </Pressable>
             <Text style={styles.timeText}>{formatDecimalTime(start)}</Text>
             <Pressable
               onPress={() => setStart((value) => Math.min(20, value + 0.25))}
               style={styles.stepButton}
             >
-              <Ionicons name="add" size={20} color="#6758D9" />
+              <Ionicons name="add" size={20} color={AppColors.primary} />
             </Pressable>
           </View>
-          <Text style={styles.label}>COLOR</Text>
+          <Text style={styles.label}>{AppText.colorLabel}</Text>
           <View style={styles.colors}>
             {COLORS.map((item) => (
               <Pressable
@@ -107,7 +109,7 @@ export function CreateEventSheet({ visible, onClose, onCreate }: Props) {
                 ]}
               >
                 {color === item && (
-                  <Ionicons name="checkmark" size={16} color="white" />
+                <Ionicons name="checkmark" size={16} color={AppColors.white} />
                 )}
               </Pressable>
             ))}
@@ -117,7 +119,7 @@ export function CreateEventSheet({ visible, onClose, onCreate }: Props) {
             onPress={submit}
             style={[styles.create, !title.trim() && styles.disabled]}
           >
-            <Text style={styles.createText}>Add to calendar</Text>
+            <Text style={styles.createText}>{AppText.addToCalendar}</Text>
           </Pressable>
         </View>
       </KeyboardAvoidingView>
@@ -129,10 +131,10 @@ const styles = StyleSheet.create({
   keyboardContainer: { flex: 1, justifyContent: "flex-end" },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(26,27,31,0.28)",
+    backgroundColor: AppColors.overlay,
   },
   sheet: {
-    backgroundColor: "#FFF",
+    backgroundColor: AppColors.surface,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     paddingHorizontal: 22,
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 5,
     borderRadius: 3,
-    backgroundColor: "#DEDFE3",
+    backgroundColor: AppColors.handle,
     marginBottom: 18,
   },
   header: {
@@ -153,12 +155,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 24,
   },
-  heading: { fontSize: 22, fontWeight: "700", color: "#22242A" },
+  heading: { fontSize: 22, fontWeight: "700", color: AppColors.textStrong },
   close: {
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: "#F2F1EF",
+    backgroundColor: AppColors.surfaceControl,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -166,22 +168,22 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "800",
     letterSpacing: 1,
-    color: "#92949B",
+    color: AppColors.textMuted,
     marginBottom: 8,
   },
   input: {
     height: 52,
     borderRadius: 14,
-    backgroundColor: "#F5F4F2",
+    backgroundColor: AppColors.surfaceMuted,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: "#25272D",
+    color: AppColors.text,
     marginBottom: 22,
   },
   timeControl: {
     height: 52,
     borderRadius: 14,
-    backgroundColor: "#F5F4F2",
+    backgroundColor: AppColors.surfaceMuted,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -192,11 +194,11 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: "#E9E5FA",
+    backgroundColor: AppColors.primaryControl,
     alignItems: "center",
     justifyContent: "center",
   },
-  timeText: { fontSize: 16, fontWeight: "700", color: "#35373E" },
+  timeText: { fontSize: 16, fontWeight: "700", color: AppColors.textStrong },
   colors: { flexDirection: "row", gap: 14, marginBottom: 26 },
   color: {
     width: 36,
@@ -205,14 +207,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  selectedColor: { borderWidth: 3, borderColor: "#E8E5F9" },
+  selectedColor: { borderWidth: 3, borderColor: AppColors.primaryBorder },
   create: {
     height: 52,
     borderRadius: 16,
-    backgroundColor: "#6758D9",
+    backgroundColor: AppColors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
   disabled: { opacity: 0.4 },
-  createText: { color: "white", fontWeight: "700", fontSize: 15 },
+  createText: { color: AppColors.white, fontWeight: "700", fontSize: 15 },
 });
