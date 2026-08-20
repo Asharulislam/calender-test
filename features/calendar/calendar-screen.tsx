@@ -1,11 +1,9 @@
+import { AppColors } from "@/constants/app-colors";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Animated, PanResponder, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AppColors } from "@/constants/app-colors";
-
-import { styles } from "./calendar-screen.styles";
 import { CalendarHeader } from "./components/calendar-header";
 import { CreateEventSheet } from "./components/create-event-sheet";
 import { DayTimeline } from "./components/day-timeline";
@@ -13,6 +11,7 @@ import { EventDetailsSheet } from "./components/event-details-sheet";
 import { WeekStrip } from "./components/week-strip";
 import { HOUR_HEIGHT, START_HOUR } from "./constants";
 import { MOCK_EVENTS_BY_DAY } from "./data/mock-events";
+import { styles } from "./styles/calendar-screen.styles";
 import type { CalendarEvent } from "./types";
 import { dateAtDayOffset } from "./utils/date";
 import { layoutOverlappingEvents } from "./utils/layout-events";
@@ -24,9 +23,10 @@ export function CalendarScreen() {
   );
   const [creatingEvent, setCreatingEvent] = useState(false);
   const [draggingEvent, setDraggingEvent] = useState(false);
-  const [eventsByDay, setEventsByDay] = useState<Record<number, CalendarEvent[]>>(
-    () => ({ ...MOCK_EVENTS_BY_DAY }),
-  );
+
+  const [eventsByDay, setEventsByDay] = useState<
+    Record<number, CalendarEvent[]>
+  >(() => ({ ...MOCK_EVENTS_BY_DAY }));
   const scrollRef = useRef<ScrollView>(null);
   const slideAnimation = useRef(new Animated.Value(0)).current;
   const date = dateAtDayOffset(dayOffset);
